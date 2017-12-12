@@ -13,6 +13,7 @@ namespace Microsoft.AspNetCore.Mvc.RazorPages
     public class RazorPagesOptions
     {
         private string _root = "/Pages";
+        private string _areasRoot = "/Areas";
 
         /// <summary>
         /// Gets a collection of <see cref="IPageConvention"/> instances that are applied during
@@ -40,6 +41,32 @@ namespace Microsoft.AspNetCore.Mvc.RazorPages
                 }
 
                 _root = value;
+            }
+        }
+
+        public bool DisableAreas { get; set; }
+
+        /// <summary>
+        /// Application relative path used as the root of discovery for Razor Page files associated with areas.
+        /// Defaults to the <c>/Areas</c> directory under application root.
+        /// <seealso cref="DisableAreas" />
+        /// </summary>
+        public string AreaRootDirectory
+        {
+            get => _areasRoot;
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentException(Resources.ArgumentCannotBeNullOrEmpty, nameof(value));
+                }
+
+                if (value[0] != '/')
+                {
+                    throw new ArgumentException(Resources.PathMustBeRootRelativePath, nameof(value));
+                }
+
+                _areasRoot = value;
             }
         }
     }
